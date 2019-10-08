@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1570542687 source:g:\disk 2\code blocks projects\ttt-2\main.cpp
+	<iostream>
+	<vector>
+	<stdlib.h>
+	<ctime>
+
