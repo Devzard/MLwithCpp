@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <stdlib.h>
 #include <ctime>
@@ -11,6 +12,17 @@ bool isGameOver = false, validInput = false;
 vector<int> ans;
 vector<int> Matrix;
 vector<int> moves;
+
+int randNum(int range);
+void display();
+int getNumPos(int pos);
+void resetOptions(int num);
+void learn();
+void apply();
+void userInput();
+void modifyMatrix(int pos,int value);
+void computerInput();
+void check();
 
 int randNum(int range)
 {
@@ -59,7 +71,21 @@ void resetOptions(int num)
 
 void learn()
 {
+    Matrix.push_back(matrix);
+    moves.push_back(compInp);
+}
 
+void apply()
+{
+    for(int i = 0; i < Matrix.size(); i++)
+    {
+        if(Matrix[i]==matrix)
+        {
+            cout<<"yeah";
+            if(moves[i]==compInp)
+                computerInput();
+        }
+    }
 }
 
 void userInput()
@@ -91,6 +117,7 @@ void computerInput()
 {
     cout<<"\nComputer's Turn -\nComputer's move :"<<endl;
     compInp = ans[randNum(ans.size())];
+    apply();
     cout<<compInp<<endl;
     cout<<"\n";
 }
@@ -118,23 +145,47 @@ void check()
             cout<<"You won\n\n\n";
             isGameOver = true;
             learn();
+            matrix = 222222222;
         }
         else
         {
             cout<<"Comp wins\n\n\n";
             isGameOver = true;
+            matrix = 222222222;
         }
     }
     else
+    {
+        cout<<"\n\nNO Winner yet!";
         isGameOver = false;
+    }
 }
 
 int main()
 {
+    int M,m;
+    ifstream prog_1("DeleteMeToReset1.bin",ios::in);
+    ifstream prog_2("DeleteMeToReset2.bin",ios::in);
+    while(prog_1>>M)
+    {
+        Matrix.push_back(M);
+    }
+    while(prog_2>>m)
+    {
+        moves.push_back(m);
+    }
+    prog_1.close();
+    prog_2.close();
+
+    ofstream save_1("DeleteMeToReset1.bin",ios::out);
+    ofstream save_2("DeleteMeToReset2.bin",ios::out);
+
     for(int k = 1; k < 10; k++)
     {
         ans.push_back(k);
     }
+
+    matrix = 222222222;
 
     while(!isGameOver)
     {
@@ -156,6 +207,7 @@ int main()
         check();
         if(isGameOver)
         {
+
             getch();
             break;
         }
@@ -163,6 +215,12 @@ int main()
         cout<<"\n\nPress any key for next move"<<endl;
         getch();
     }
+    for(int m = 0; m < Matrix.size(); m++)
+    {
+        save_1<<Matrix[m]<<endl;
+        save_2<<moves[m]<<endl;
+    }
+
 
     return 0;
 }
